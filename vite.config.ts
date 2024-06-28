@@ -14,7 +14,7 @@ export default defineConfig({
     // Inject CSS into the bundle, so consuming apps don't need to import it separately
     libInjectCss(),
     // Generate type definitions
-    dts({include: ['src/**/!(*.spec|*.test).{ts,tsx}'], exclude: ['src/setupTests.ts']})
+    dts({include: ['src/**/!(*.spec|*.test|*.stories).{ts,tsx}'], exclude: ['src/setupTests.ts']})
   ],
   build: {
     lib: {
@@ -27,7 +27,7 @@ export default defineConfig({
       external: ['react', 'react/jsx-runtime'],
       // Generate an entry point for each file in src, rather than having all built code in the single main.js file.
       input: Object.fromEntries(
-        glob.sync('src/**/!(*.spec|*.test).{ts,tsx}', {ignore: ['src/**/*.d.ts', 'src/setupTests.ts']}).map((file) => [
+        glob.sync('src/**/!(*.spec|*.test|*.stories).{ts,tsx}', {ignore: ['src/**/*.d.ts', 'src/setupTests.ts']}).map((file) => [
           // The name of the entry point
           // src/nested/foo.ts becomes nested/foo
           relative('src', file.slice(0, file.length - extname(file).length)),
