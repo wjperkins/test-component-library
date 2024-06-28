@@ -17,6 +17,10 @@ To locally link the library to a consuming app for testing, do the following:
 - Run `npm link` in the library directory.
 - Run `npm link "@wjperkins/test-component-library"` in the consuming app directory.
 
+## Tests
+Tests are written with Vitest and React Testing Library. To run the tests, use `npm run test`,
+or `npm run test:coverage` to get coverage information.
+
 ## Known Issues
 - The base Tailwind CSS preflight styles are included in the library build, and then leak out into the consuming
 application. These are useful to have in the component library, but shouldn't also affect the consuming app. For now
@@ -27,5 +31,4 @@ for each component, and then only the necessary styles would be included in the 
 ## Next Steps
 - Investigate how to isolate the Tailwind CSS preflight styles to the component library only.
 - Make use of shadcn/ui components to build a more complex component library.
-- Add tests and ensure they aren't included in the library build.
 - Add Storybook for component documentation.
