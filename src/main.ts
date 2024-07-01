@@ -1,5 +1,5 @@
-import './index.css'
+import "./index.css";
 
-export { Button } from './components/Button/Button'
-export { Input } from './components/Input/Input'
-export { Label } from './components/Label/Label'
+export { Button } from "./components/Button/Button";
+export { Input } from "./components/Input/Input";
+export { Label } from "./components/Label/Label";
