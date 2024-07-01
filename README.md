@@ -21,6 +21,10 @@ To locally link the library to a consuming app for testing, do the following:
 Tests are written with Vitest and React Testing Library. To run the tests, use `npm run test`,
 or `npm run test:coverage` to get coverage information.
 
+## Stories
+Storybook is used to document the components. To run Storybook, use `npm run storybook`.
+The main `index.css` file is imported into `.storybook/preview.ts` to ensure the Tailwind CSS styles are available.
+
 ## Known Issues
 - The base Tailwind CSS preflight styles are included in the library build, and then leak out into the consuming
 application. These are useful to have in the component library, but shouldn't also affect the consuming app. For now
@@ -31,4 +35,3 @@ for each component, and then only the necessary styles would be included in the 
 ## Next Steps
 - Investigate how to isolate the Tailwind CSS preflight styles to the component library only.
 - Make use of shadcn/ui components to build a more complex component library.
-- Add Storybook for component documentation.
