@@ -6,6 +6,9 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "plugin:storybook/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "prettier",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
@@ -15,5 +18,16 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+  },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig-build.json'],
+    tsconfigRootDir: __dirname,
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },
   },
 };
