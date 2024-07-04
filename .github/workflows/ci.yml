@@ -87,5 +87,7 @@ jobs:
         env:
           VERSION: ${{ steps.extract-version.outputs.version_number }}
         run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
           git push origin "v${{ env.VERSION }}"
