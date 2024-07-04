@@ -27,7 +27,7 @@ echo "Pulling latest changes..."
 git fetch origin 'refs/tags/*:refs/tags/*'
 git pull
 
-current_version=$(grep '"version"' ../web/package.json | cut -d '"' -f 4)
+current_version=$(grep '"version"' ../package.json | cut -d '"' -f 4)
 
 # Get the changes since the last tagged release
 echo "Grabbing Git Log..."
