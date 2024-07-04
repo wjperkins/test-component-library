@@ -38,7 +38,7 @@ jobs:
 
   approve-bump-version:
     name: Approve Version Bump PR
-    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'bump-version')
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, 'Bump Avori Component Library version')
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -61,7 +61,30 @@ jobs:
         id: approve-release
         run: |
           gh pr review "$PR_URL" --approve
+
+  release:
+    name: Release
+    if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'Bump Avori Component Library version')
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract version number
+        id: extract-version
+        run: |
           echo "version_number=$(npm pkg get version | tr -d '\"')" >> "$GITHUB_OUTPUT"
 
-    outputs:
-      version_number: ${{ steps.approve-release.outputs.version_number }}
+      - name: Create Git Tag
+        id: create-tag
+        env:
+          VERSION: ${{ steps.extract-version.outputs.version_number }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"

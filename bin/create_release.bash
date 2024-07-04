@@ -69,7 +69,7 @@ npm --no-git-tag-version version "$version_number"
 
 echo ""
 echo "Committing changes..."
-git commit -am "Bump version to $version_number" --no-verify
+git commit -am "Bump Avori Component Library version to $version_number" --no-verify
 
 echo ""
 echo "Pushing changes to remote..."
