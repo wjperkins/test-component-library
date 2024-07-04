@@ -39,7 +39,7 @@ jobs:
   approve-bump-version:
     name: Approve Version Bump PR
     if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, 'Bump Avori Component Library version')
-    needs: build
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -65,7 +65,7 @@ jobs:
   release:
     name: Release
     if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'Bump Avori Component Library version')
-    needs: build
+    needs: [build]
     runs-on: ubuntu-latest
 
     env:
