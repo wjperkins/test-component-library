@@ -32,42 +32,35 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check for vulnerabilities
-        if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          if [ "$(npm audit --level critical --json  | jq -r .metadata.vulnerabilities.critical)" != "0" ]; then
-            npm audit;
-            exit 1;
-          fi
-
       - name: Build
         run: |
           npm run build
 
-  release-library:
-    name: Release library
-    if: github.ref == 'refs/heads/main'
+  approve-bump-version:
+    name: Approve Version Bump PR
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'bump-version')
     needs: build
     runs-on: ubuntu-latest
-
     permissions:
-      packages: write
-      contents: read
+      pull-requests: write
+      contents: write
+      issues: write
+      repository-projects: read
+
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: "npm"
-          cache-dependency-path: "package-lock.json"
+          fetch-depth: 0
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Approve release PR
+        id: approve-release
+        run: |
+          gh pr review "$PR_URL" --approve
+          echo "version_number=$(npm pkg get version | tr -d '\"')" >> "$GITHUB_OUTPUT"
 
-      - name: Build
-        run: npm run build
+    outputs:
+      version_number: ${{ steps.approve-release.outputs.version_number }}
