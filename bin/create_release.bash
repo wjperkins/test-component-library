@@ -30,9 +30,15 @@ current_version=$(grep '"version"' ../package.json | cut -d '"' -f 4)
 
 # Get the changes since the last tagged release
 echo "Grabbing Git Log..."
-git_log=$(git log "$(git tag -l "1*" --sort=-version:refname | head -n 1)..HEAD" --pretty=format:"* %s")
+latest_tag=$(git tag -l "1*" --sort=-version:refname | head -n 1)
+echo "Latest tag: $latest_tag"
+git_log=$(git log "$latest_tag..HEAD" --pretty=format:"* %s")
 echo "Changes since the last tagged release:"
-echo "$git_log"
+if [ -z "$git_log" ]; then
+  echo "❌ No changes found since last release."
+else
+  echo "$git_log"
+fi
 
 # Ask the user for the version number
 echo ""
