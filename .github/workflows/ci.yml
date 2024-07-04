@@ -65,6 +65,7 @@ jobs:
   release:
     name: Release
     if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'Bump Avori Component Library version')
+    needs: build
     runs-on: ubuntu-latest
 
     env:
