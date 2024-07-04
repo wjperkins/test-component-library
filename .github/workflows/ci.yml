@@ -22,19 +22,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-          cache-dependency-path: "package-lock.json"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: |
-          npm run build
+#      - name: Install Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
+#          cache: "npm"
+#          cache-dependency-path: "package-lock.json"
+#
+#      - name: Install dependencies
+#        run: npm ci
+#
+#      - name: Build
+#        run: |
+#          npm run build
 
   approve-bump-version:
     name: Approve Version Bump PR
@@ -67,6 +67,8 @@ jobs:
     if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'Bump Avori Component Library version')
     needs: [build]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -85,7 +87,5 @@ jobs:
         env:
           VERSION: ${{ steps.extract-version.outputs.version_number }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git tag -a "v${{ env.VERSION }}" -m "Release v${{ env.VERSION }}"
           git push origin "v${{ env.VERSION }}"

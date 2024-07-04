@@ -52,7 +52,7 @@ fi
 
 # Allow the user a chance to abort
 echo ""
-read -rp "❓ Continuing will update the version number and create a tagged release - continue? [y/n]" continue_input
+read -rp "❗ Continuing will update the version number and create a tagged release - continue? [y/n]" continue_input
 if [ "$continue_input" == "${continue_input#[Yy]}" ] ;then
     echo Exiting...
     exit 1
@@ -76,7 +76,7 @@ echo "Pushing changes to remote..."
 git push --set-upstream origin "$branch_name"
 
 echo "Creating PR - this will be merged automatically as part of the deployment process."
-pr_url=$(gh pr create -f --label "bump-version")
+pr_url=$(gh pr create -f)
 gh pr merge --auto --squash "$pr_url"
 
 echo ""
