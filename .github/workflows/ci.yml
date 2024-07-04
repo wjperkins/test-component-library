@@ -82,10 +82,7 @@ jobs:
         env:
           VERSION: ${{ steps.extract-version.outputs.version_number }}
         run: |
-          echo "Fetching latest tags..."
-          git fetch origin 'refs/tags/*:refs/tags/*'
-          git pull
-          CURRENT_RELEASE=${{ env.VERSION }}
+          CURRENT_RELEASE="v${{ env.VERSION }}"
           echo "CURRENT_RELEASE=$CURRENT_RELEASE"
           PREVIOUS_RELEASE="$(gh release list --limit 1 | awk '{print $1}')"
           echo "PREVIOUS_RELEASE=$PREVIOUS_RELEASE"
